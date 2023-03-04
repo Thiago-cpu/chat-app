@@ -1,32 +1,30 @@
-import { useId, forwardRef, type ForwardedRef } from "react";
+import { type ForwardedRef, forwardRef, useId } from "react";
 import type { IconType, IconBaseProps } from "react-icons";
 import { twMerge } from "tailwind-merge";
 
-interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
+interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   leftIcon?: IconType;
   iconProps?: IconBaseProps;
   error?: string;
-  containerClassName?: string;
 }
 
-const Textfield = forwardRef(
-  (props: Props, ref: ForwardedRef<HTMLInputElement>) => {
+const Textarea = forwardRef(
+  (props: Props, ref: ForwardedRef<HTMLTextAreaElement>) => {
     const {
       leftIcon: LeftIcon,
       className,
       error,
       iconProps = {},
-      containerClassName,
       ...rest
     } = props;
     const labelId = useId();
     const pl = LeftIcon ? "pl-10" : "";
     const { className: iconClassName } = iconProps;
     return (
-      <div className={twMerge("flex flex-col gap-2", containerClassName)}>
+      <div className="flex flex-col gap-2">
         <label
           htmlFor={labelId}
-          className="relative block text-base tracking-tight text-gray-400 "
+          className="relative block text-base tracking-tight text-gray-400"
         >
           {LeftIcon && (
             <LeftIcon
@@ -38,12 +36,12 @@ const Textfield = forwardRef(
               size={20}
             />
           )}
-          <input
+          <textarea
             {...rest}
             ref={ref}
             id={labelId}
             className={twMerge(
-              `block w-full appearance-none rounded-lg bg-neutral-800 py-3 px-4 text-white placeholder-gray-400 disabled:bg-gray-400 ${pl} placeholder:text-neutral-500 focus:outline-none`,
+              `block w-full appearance-none rounded-lg bg-neutral-800 py-3 px-4 text-white placeholder-gray-400 ${pl} placeholder:text-neutral-500 focus:outline-none`,
               className
             )}
           />
@@ -54,6 +52,6 @@ const Textfield = forwardRef(
   }
 );
 
-Textfield.displayName = "Textfield";
+Textarea.displayName = "Textarea";
 
-export default Textfield;
+export default Textarea;
