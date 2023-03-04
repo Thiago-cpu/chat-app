@@ -7,10 +7,13 @@ import {
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import GitHubProvider from "next-auth/providers/github";
-import TwitterProvider from "next-auth/providers/twitter";
+import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "@/env.mjs";
 import { prisma } from "@/server/db";
+import { z } from "zod";
+import { compare } from "bcrypt";
+import { AuthPages } from "@/constants/auth";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -35,10 +38,9 @@ declare module "next-auth" {
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session({ session, user }) {
-      if (session.user) {
-        session.user.id = user.id;
-        // session.user.role = user.role; <-- put other properties on the session here
+    session({ session, token }) {
+      if (session.user && token.sub) {
+        session.user.id = token.sub;
       }
       return session;
     },
@@ -53,18 +55,49 @@ export const authOptions: NextAuthOptions = {
       clientId: env.FACEBOOK_CLIENT_ID,
       clientSecret: env.FACEBOOK_CLIENT_SECRET,
     }),
-    TwitterProvider({
-      clientId: env.TWITTER_CLIENT_ID,
-      clientSecret: env.TWITTER_CLIENT_SECRET,
-    }),
     GitHubProvider({
       clientId: env.GITHUB_ID,
       clientSecret: env.GITHUB_SECRET,
     }),
+    Credentials({
+      name: "Credentials",
+      type: "credentials",
+      credentials: {
+        email: {
+          label: "Email",
+          type: "text",
+          placeholder: "Email",
+        },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        const { email, password } = z
+          .object({
+            email: z.string(),
+            password: z.string(),
+          })
+          .parse(credentials);
+
+        const user = await prisma.user.findUnique({
+          where: {
+            email,
+          },
+        });
+        if (!user || !user.password)
+          throw new Error("Wrong credentials. Try again.");
+
+        const isValid = await compare(password, user.password);
+        if (!isValid) throw new Error("Wrong credentials. Try again.");
+        return user;
+      },
+    }),
   ],
-  pages: {
-    signIn: "/auth/signin",
+  secret: env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt",
   },
+  debug: true,
+  pages: AuthPages,
 };
 
 /**

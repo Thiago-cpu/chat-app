@@ -1,5 +1,6 @@
 import type { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
-import type { IconType } from "react-icons";
+import type { IconType, IconBaseProps } from "react-icons";
+import { twMerge } from "tailwind-merge";
 
 interface Props
   extends DetailedHTMLProps<
@@ -7,16 +8,18 @@ interface Props
     HTMLButtonElement
   > {
   icon: IconType;
+  iconProps?: IconBaseProps;
 }
 
 export default function IconButton(props: Props) {
-  const { icon: Icon, ...rest } = props;
+  const { icon: Icon, iconProps = {}, className, ...rest } = props;
+
   return (
     <button
       {...rest}
-      className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-500"
+      className={twMerge("flex items-center justify-center", className)}
     >
-      <Icon width={18} height={18} className="fill-neutral-500" />
+      <Icon size={18} className="fill-neutral-500" {...iconProps} />
     </button>
   );
 }

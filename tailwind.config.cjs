@@ -5,7 +5,11 @@ module.exports = {
     colors: {
       transparent: "transparent",
       white: "#FFFFFF",
-      black: "#000000",
+      black: {
+        default: "#000000",
+        600: "#120f13",
+        700: "#0B090C",
+      },
       neutral: {
         DEFAULT: "#FAFAFB",
         50: "#FAFAFB",
@@ -17,6 +21,9 @@ module.exports = {
         600: "#4F4F4F",
         700: "#333333",
         800: "#252329",
+      },
+      gray: {
+        100: "#3C393F",
       },
       red: {
         DEFAULT: "#F0402C",

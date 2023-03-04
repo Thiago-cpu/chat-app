@@ -1,4 +1,4 @@
-import { FaFacebook, FaGithub, FaTwitter, FaGoogle } from "react-icons/fa";
+import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
 
 export const PROVIDERS = [
   {
@@ -8,10 +8,6 @@ export const PROVIDERS = [
   {
     sign: "facebook",
     icon: FaFacebook,
-  },
-  {
-    sign: "twitter",
-    icon: FaTwitter,
   },
   {
     sign: "github",
