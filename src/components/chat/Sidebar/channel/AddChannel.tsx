@@ -9,9 +9,27 @@ import { useForm } from "react-hook-form";
 import { type z } from "zod";
 import { type chatRouterInput } from "@/server/api/routers/chat";
 import { useState } from "react";
+import useNotify from "../../../../hooks/useNotify";
 
 export default function AddChannel() {
-  const { mutate: registerMutate } = api.chat.add.useMutation();
+  const notify = useNotify();
+  const utils = api.useContext();
+  const { mutate: registerMutate } = api.chat.add.useMutation({
+    onSuccess() {
+      notify({
+        title: "Channel created!",
+      });
+    },
+    onError() {
+      notify({
+        type: "warning",
+        title: "Error creating channel!",
+      });
+    },
+    onSettled() {
+      void utils.chat.infiniteList.invalidate();
+    },
+  });
   const [open, setOpen] = useState(false);
   const {
     register,

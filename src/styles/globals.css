@@ -32,4 +32,23 @@
     opacity: 0.4;
     pointer-events: all;
   }
+
+  .scrollbar::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  /* Track */
+  .scrollbar::-webkit-scrollbar-track {
+    background-color: #252329;
+    border-right: 2px solid #120f13;
+    border-left: 2px solid #120f13;
+  }
+
+  /* Handle */
+  .scrollbar::-webkit-scrollbar-thumb {
+    background-color: #3c393f;
+    border-left: 1px solid #120f13;
+    border-right: 1px solid #120f13;
+    border-radius: 12px;
+  }
 }

@@ -6,6 +6,7 @@ import { api } from "@/utils/api";
 import { useForm } from "react-hook-form";
 import { type z } from "zod";
 import { type userRouterInput } from "@/server/api/routers/user";
+import useNotify from "@/hooks/useNotify";
 
 interface Props {
   open: boolean;
@@ -14,7 +15,27 @@ interface Props {
 
 const MyProfile = ({ open, onOpenChange }: Props) => {
   const { data: me } = api.user.me.useQuery();
-  const { mutate: update } = api.user.updateMe.useMutation();
+  const utils = api.useContext();
+  const notify = useNotify();
+
+  const { mutate: update } = api.user.updateMe.useMutation({
+    onSuccess() {
+      notify({
+        title: "Updated!",
+        description: "User updated successfuly!",
+      });
+    },
+    onError() {
+      notify({
+        type: "warning",
+        title: "Error updating!",
+      });
+    },
+    onSettled() {
+      void utils.user.me.invalidate();
+    },
+  });
+
   const { register, handleSubmit } =
     useForm<z.infer<typeof userRouterInput.updateMe>>();
 

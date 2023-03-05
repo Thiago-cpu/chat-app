@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { useSession, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { initials } from "@/utils/string";
 import Avatar from "@/components/ui/Avatar";
 import IconButton from "@/components/ui/IconButton";
@@ -9,15 +9,16 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
 import MyProfile from "./MyProfile";
+import { api } from "@/utils/api";
 
 export default function ProfileMenu() {
-  const { data: session } = useSession();
+  const { data: me } = api.user.me.useQuery();
   const [openMenu, setOpenMenu] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
-  if (!session) return null;
+  if (!me) return null;
 
-  const label = session.user.name ?? session.user.email ?? "";
-  const src = session.user.image ?? "";
+  const label = me.name ?? me.email ?? "";
+  const src = me.image ?? "";
   return (
     <div className="flex gap-7 bg-black-700 pb-4 pt-4 pl-7 pr-7">
       <Avatar
