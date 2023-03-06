@@ -1,11 +1,11 @@
 import React, { useId } from "react";
-import { initials } from "../../../../utils/string";
+import { initials } from "@/utils/string";
 
 import Avatar from "@/components/ui/Avatar";
 import IconButton from "@/components/ui/IconButton";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { useSidebarStore } from "@/store/SidebarStore";
-import { useChatStore } from "../../../../store/ChatStore";
+import { useChatStore } from "@/store/ChatStore";
 import { api } from "@/utils/api";
 import useObserver from "@/hooks/useObserver";
 

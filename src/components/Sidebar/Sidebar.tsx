@@ -1,7 +1,7 @@
 import AllChannel from "./channel/AllChannel";
 import ChannelInfo from "./channel/ChannelInfo";
 import ProfileMenu from "./profile/ProfileMenu";
-import { useSidebarStore } from "../../../store/SidebarStore";
+import { useSidebarStore } from "@/store/SidebarStore";
 
 export default function Sidebar() {
   const seeAllChats = useSidebarStore((state) => state.seeAllChats);

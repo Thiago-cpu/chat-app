@@ -4,12 +4,12 @@ import Textarea from "@/components/ui/Textarea";
 import { api } from "@/utils/api";
 import * as Dialog from "@radix-ui/react-dialog";
 import { IoMdAdd } from "react-icons/io";
-import Textfield from "../../../ui/Textfield";
+import Textfield from "@/components/ui/Textfield";
 import { useForm } from "react-hook-form";
 import { type z } from "zod";
 import { type chatRouterInput } from "@/server/api/routers/chat";
 import { useState } from "react";
-import useNotify from "../../../../hooks/useNotify";
+import useNotify from "@/hooks/useNotify";
 
 export default function AddChannel() {
   const notify = useNotify();

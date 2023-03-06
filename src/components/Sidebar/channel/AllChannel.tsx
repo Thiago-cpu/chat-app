@@ -1,11 +1,11 @@
 import React, { useDeferredValue, useId, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import Textfield from "../../../ui/Textfield";
-import { initials } from "../../../../utils/string";
+import Textfield from "@/components/ui/Textfield";
+import { initials } from "@/utils/string";
 import AddChannel from "./AddChannel";
-import { useSidebarStore } from "../../../../store/SidebarStore";
+import { useSidebarStore } from "@/store/SidebarStore";
 import { api } from "@/utils/api";
-import useObserver from "../../../../hooks/useObserver";
+import useObserver from "@/hooks/useObserver";
 import { useChatStore } from "@/store/ChatStore";
 import { type Chat } from "@prisma/client";
 
