@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Props {
   onObserved: () => void;
@@ -6,12 +6,17 @@ interface Props {
 
 function useObserver({ onObserved }: Props) {
   const ref = useRef(null);
+  const [isNearScreen, setIsNearScreen] = useState(false);
 
   useEffect(() => {
     const node = ref.current;
     const observer = new IntersectionObserver(([entry]) => {
       if (entry?.isIntersecting) {
-        onObserved();
+        setIsNearScreen(true);
+        if (node) {
+          onObserved();
+        }
+        observer.disconnect();
       }
     });
 
@@ -19,14 +24,10 @@ function useObserver({ onObserved }: Props) {
       observer.observe(node);
     }
 
-    return () => {
-      if (node) {
-        observer.unobserve(node);
-      }
-    };
-  }, [onObserved]);
+    return () => observer && observer.disconnect();
+  }, [isNearScreen, onObserved]);
 
-  return ref;
+  return { ref, isNearScreen };
 }
 
 export default useObserver;

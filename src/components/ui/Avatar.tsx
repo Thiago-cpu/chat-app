@@ -23,6 +23,7 @@ export default function Avatar({
         className="h-full w-full rounded-[inherit] object-cover"
         src={src}
         alt={alt}
+        loading="lazy"
       />
       <RadixAvatar.Fallback className="">
         <div

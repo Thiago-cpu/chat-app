@@ -4,8 +4,10 @@ import { twMerge } from "tailwind-merge";
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   leftIcon?: IconType;
+  rightElement?: React.ReactElement;
   iconProps?: IconBaseProps;
   error?: string;
+  withoutErrorMessage?: boolean;
   containerClassName?: string;
 }
 
@@ -13,7 +15,9 @@ const Textfield = forwardRef(
   (props: Props, ref: ForwardedRef<HTMLInputElement>) => {
     const {
       leftIcon: LeftIcon,
+      rightElement,
       className,
+      withoutErrorMessage,
       error,
       iconProps = {},
       containerClassName,
@@ -21,6 +25,7 @@ const Textfield = forwardRef(
     } = props;
     const labelId = useId();
     const pl = LeftIcon ? "pl-10" : "";
+    const pr = rightElement ? "pr-10" : "";
     const { className: iconClassName } = iconProps;
     return (
       <div className={twMerge("flex flex-col gap-2", containerClassName)}>
@@ -43,12 +48,23 @@ const Textfield = forwardRef(
             ref={ref}
             id={labelId}
             className={twMerge(
-              `block w-full appearance-none rounded-lg bg-neutral-800 py-3 px-4 text-white placeholder-gray-400 disabled:bg-gray-400 ${pl} placeholder:text-neutral-500 focus:outline-none`,
+              `block w-full appearance-none rounded-lg bg-neutral-800 py-3 px-4 text-white placeholder-gray-400 disabled:bg-gray-400 ${pl} ${pr} placeholder:text-neutral-500 focus:outline-none`,
               className
             )}
           />
+          {rightElement && (
+            <div
+              className={twMerge(
+                "pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 transform"
+              )}
+            >
+              {rightElement}
+            </div>
+          )}
         </label>
-        <p className="h-5 overflow-hidden text-sm text-red-50">{error}</p>
+        {!withoutErrorMessage && (
+          <p className="h-5 overflow-hidden text-sm text-red-50">{error}</p>
+        )}
       </div>
     );
   }

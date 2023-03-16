@@ -8,6 +8,7 @@ import { useSidebarStore } from "@/store/SidebarStore";
 import { useChatStore } from "@/store/ChatStore";
 import { api } from "@/utils/api";
 import useObserver from "@/hooks/useObserver";
+import useMergedItems from "@/hooks/useMergedItems";
 
 export default function ChannelInfo() {
   const seeAllChats = useSidebarStore((state) => state.toggle);
@@ -47,20 +48,11 @@ function ChannelMembers() {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
       }
     );
-  const observedRef = useObserver({
+  const { ref: observedRef } = useObserver({
     onObserved: () => void fetchNextPage(),
   });
 
-  const usersPage = userPage?.pages.reduce((acum, curr) => {
-    if (acum.items) {
-      return {
-        ...acum,
-        items: [...acum.items, ...curr.items],
-      };
-    }
-    return curr;
-  });
-  const users = usersPage?.items ?? [];
+  const users = useMergedItems(userPage);
 
   return (
     <div className="mt-11 flex flex-col gap-6 overflow-auto">

@@ -8,6 +8,7 @@ import { api } from "@/utils/api";
 import useObserver from "@/hooks/useObserver";
 import { useChatStore } from "@/store/ChatStore";
 import { type Chat } from "@prisma/client";
+import useMergedItems from "../../../hooks/useMergedItems";
 
 export default function AllChannel() {
   const [q, setQ] = useState("");
@@ -51,20 +52,10 @@ function ChannelButtons({ q }: { q?: string }) {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
       }
     );
-  const observedRef = useObserver({
+  const channels = useMergedItems(chatPage);
+  const { ref: observedRef } = useObserver({
     onObserved: () => void fetchNextPage(),
   });
-
-  const channelsPage = chatPage?.pages.reduce((acum, curr) => {
-    if (acum.items) {
-      return {
-        ...acum,
-        items: [...acum.items, ...curr.items],
-      };
-    }
-    return curr;
-  });
-  const channels = channelsPage?.items ?? [];
 
   const handleChangeChat = (chat: Chat) => () => {
     changeChat(chat);

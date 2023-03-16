@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { type PrismaClient } from "@prisma/client";
 
 export default async function MessageSeeder(prisma: PrismaClient) {
-  const arr = Array(100)
+  const arr = Array(1000)
     .fill(0)
     .map((_, index) => index + 1);
   const totalCount = await prisma.user.count();

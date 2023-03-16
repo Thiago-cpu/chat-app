@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { type PrismaClient } from "@prisma/client";
 
 export default async function ChannelSeeder(prisma: PrismaClient) {
-  const arr = Array(100)
+  const arr = Array(10)
     .fill(0)
     .map((_, index) => index + 1);
 

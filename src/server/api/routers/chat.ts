@@ -30,10 +30,10 @@ export const chatRouter = createTRPCRouter({
   infiniteList: protectedProcedure
     .input(infinityInput)
     .query(async ({ input, ctx }) => {
-      const limit = input.limit ?? 50;
+      const limit = input.limit;
       const { cursor } = input;
       const items = await ctx.prisma.chat.findMany({
-        take: limit + 1, // get an extra item at the end which we'll use as next cursor
+        take: limit + 1,
         where: {
           name: {
             contains: input.q,
