@@ -1,0 +1,31 @@
+version: 1
+env:
+  variables:
+    DATABASE_URL: mysql://70mos3f33k4l0y1cgjar:pscale_pw_gLLIXu9OesNvhR2chNe5NyWPuBhkMpLlTeEgfHXRkkL@us-east.connect.psdb.cloud/chat-app?sslaccept=strict?connection_limit=20&pool_timeout=0
+    NEXTAUTH_SECRET: "changeme2asd"
+    NEXTAUTH_URL: "https://prod.d3my3e9nu3mpxp.amplifyapp.com"
+    JWT_SECRET: "fb90a870675b0787f5cbf15852f367a8"
+    GOOGLE_CLIENT_ID: "877520042506-6h80jg0ejksbgt71039qtd15jf3mm6it.apps.googleusercontent.com"
+    GOOGLE_CLIENT_SECRET: "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"
+    FACEBOOK_CLIENT_ID: "1264434201082895"
+    FACEBOOK_CLIENT_SECRET: "7de1d939fd61e922c905e7a9852e62af"
+    GITHUB_ID: "473a6f1992d6e0a0862e"
+    GITHUB_SECRET: "151a21bf2cf567a2b129de25eb130c9b9f943e7f"
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+    build:
+      commands:
+        - npm run build
+        - echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env
+        - ... other env variables here ...
+        - echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env
+  artifacts:
+    baseDirectory: .next
+    files:
+      - "**/*"
+  cache:
+    paths:
+      - node_modules/**/*
