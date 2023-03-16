@@ -2,7 +2,10 @@ import { faker } from "@faker-js/faker";
 import { type PrismaClient } from "@prisma/client";
 
 export default async function ChannelSeeder(prisma: PrismaClient) {
-  const arr = Array(10)
+  const count = await prisma.chat.count();
+  const length = 10 - count;
+  if (length < 1) return;
+  const arr = Array(length)
     .fill(0)
     .map((_, index) => index + 1);
 

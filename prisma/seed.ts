@@ -5,8 +5,8 @@ import UserSeeder from "./seeders/UserSeeder";
 const prisma = new PrismaClient();
 
 async function main() {
-  // await UserSeeder(prisma);
-  // await ChannelSeeder(prisma);
+  await UserSeeder(prisma);
+  await ChannelSeeder(prisma);
   await MessageSeeder(prisma);
 }
 main()

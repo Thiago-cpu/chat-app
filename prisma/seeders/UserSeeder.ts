@@ -2,7 +2,10 @@ import { faker } from "@faker-js/faker";
 import { type PrismaClient } from "@prisma/client";
 
 export default async function UserSeeder(prisma: PrismaClient) {
-  const arr = Array(200)
+  const count = await prisma.user.count();
+  const length = 10 - count;
+  if (length < 1) return;
+  const arr = Array(length)
     .fill(0)
     .map((_, index) => index + 1);
 
